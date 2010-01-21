@@ -1,0 +1,4 @@
+# Release manifest for PrefsCachePlugin
+data/System/PrefsCachePlugin.txt 0644 Documentation
+lib/Foswiki/Plugins/PrefsCachePlugin.pm 0644 Perl module
+lib/Foswiki/Prefs/BerkeleyDBRAM.pm 0644 Perl module

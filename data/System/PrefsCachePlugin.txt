@@ -1,0 +1,40 @@
+---+!! !PrefsCachePlugin
+<!--
+One line description, required for extensions repository catalog.
+BuildContrib will fill in the SHORTDESCRIPTION with the value of
+$SHORTDESCRIPTION from the .pm module, or you can redefine it here if you
+prefer.
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
+%SHORTDESCRIPTION%
+
+%TOC%
+
+*Foswiki 1.1.0 and later only*
+
+By default Foswiki stores preferences, including access control settings,
+in topics, either in the text or in %META tags. This means that every time
+the preferences for a topic are referenced it has to be opened and parsed,
+which can be a significant performance hit.
+
+The %TOPIC% uses a Berkeley DB to cache the preference settings read
+from topics, so the topics don't have to be repeatedly re-read. This gives
+a small performance boost (~3%) to Foswiki.
+
+---++ Installation Instructions
+
+%$INSTALL_INSTRUCTIONS%
+
+---++ Info
+
+|  Author(s): | Crawford Currie http://c-dot.co.uk |
+|  Copyright: | &copy; 2010 Crawford Currie |
+|  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
+|  Release: | %$RELEASE% |
+|  Version: | %$VERSION% |
+|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  Dependencies: | %$DEPENDENCIES% |
+|  Home page: | http://foswiki.org/bin/view/Extensions/PrefsCachePlugin |
+|  Support: | http://foswiki.org/bin/view/Support/PrefsCachePlugin |
+
+<!-- Do _not_ attempt to edit this topic; it is auto-generated. -->
