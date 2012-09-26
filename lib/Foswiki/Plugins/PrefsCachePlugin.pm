@@ -12,7 +12,7 @@ sub initPlugin {
     my ( $topic, $web, $user, $installWeb ) = @_;
     return 0
       unless $Foswiki::cfg{Store}{PrefsBackend} eq
-          'Foswiki::Prefs::BerkeleyDBRAM';
+      'Foswiki::Prefs::BerkeleyDBRAM';
     return 1;
 }
 
