@@ -1,9 +1,6 @@
+%META:TOPICINFO{author="ProjectContributor" date="1399553949" version="1"}%
 ---+!! !PrefsCachePlugin
 <!--
-One line description, required for extensions repository catalog.
-BuildContrib will fill in the SHORTDESCRIPTION with the value of
-$SHORTDESCRIPTION from the .pm module, or you can redefine it here if you
-prefer.
    * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
 -->
 %SHORTDESCRIPTION%
@@ -13,26 +10,43 @@ prefer.
 *Foswiki 1.1.0 and later only*
 
 By default Foswiki stores preferences, including access control settings,
-in topics, either in the text or in %META tags. This means that every time
-the preferences for a topic are referenced it has to be opened and parsed,
+in topics. This means that every time the preferences for a topic are required
+- for example, when permissions are being check - it has to be opened and read.
+In a typical installation, then the number of topics that have to be read each
+time a Foswiki script (or REST request) is run can easily be in the hundreds,
 which can be a significant performance hit.
 
 The %TOPIC% uses a Berkeley DB to cache the preference settings read
-from topics, so the topics don't have to be repeatedly re-read. This gives
-a small performance boost (~3%) to Foswiki.
+from topics, so the topics don't have to be repeatedly re-read.
+
+!BerkeleyDB is used because it is reasonably fast, and widely available.
+It would be easy for any reasonable programmer to change this to use a different
+database technology, if it is preferred. If you do this, please contribute
+your solution back to the community.
 
 ---++ Installation Instructions
 
 %$INSTALL_INSTRUCTIONS%
 
+Run =configure= and set the ={Store}{PrefsBackend}= setting to
+=Foswiki::Prefs::BerkeleyDBRAM=. Visit %SYSTEMWEB%.InstalledPlugins
+to check that it is working.
+
+Note that the plugin has no way to detect "offline" topic changes i.e. edits
+to topics that are made outside of Foswiki. If offline changes are made, the
+only way to repair the database is to delete it, and allow Foswiki to rebuild
+it. The database is stored in =/working/PrefsCachePlugin= under the root of your
+Foswiki installation, and can be safely deleted at any time.
+
 ---++ Info
 
 |  Author(s): | Crawford Currie http://c-dot.co.uk |
-|  Copyright: | &copy; 2010 Crawford Currie |
+|  Copyright: | &copy; 2012-2014 Crawford Currie |
 |  License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  1.0 (26 Sep 2012) | First version |
 |  Dependencies: | %$DEPENDENCIES% |
 |  Home page: | http://foswiki.org/bin/view/Extensions/PrefsCachePlugin |
 |  Support: | http://foswiki.org/bin/view/Support/PrefsCachePlugin |

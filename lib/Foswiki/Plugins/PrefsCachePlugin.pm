@@ -4,9 +4,10 @@ package Foswiki::Plugins::PrefsCachePlugin;
 
 use strict;
 
-our $VERSION          = '$Rev: 5771 $';
-our $RELEASE          = '1.1.1';
-our $SHORTDESCRIPTION = 'Cache preferences for faster access';
+our $VERSION           = '1.0';
+our $RELEASE           = '8 May 2014';
+our $SHORTDESCRIPTION  = 'Cache preferences for faster access';
+our $NO_PREFS_IN_TOPIC = 1;
 
 sub initPlugin {
     my ( $topic, $web, $user, $installWeb ) = @_;
@@ -26,7 +27,8 @@ sub afterSaveHandler {
 1;
 __END__
 
-Copyright (C) 2010 Foswiki Contributors. Foswiki Contributors
+Copyright (C) 2012-2014 Crawford Currie http://c-dot.co.uk
+and Foswiki Contributors. Foswiki Contributors
 are listed in the AUTHORS file in the root of this distribution.
 NOTE: Please extend that file, not this notice.
 

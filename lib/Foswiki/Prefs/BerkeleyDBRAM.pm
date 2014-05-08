@@ -2,6 +2,7 @@
 package Foswiki::Prefs::BerkeleyDBRAM;
 
 use strict;
+use Assert;
 
 use Foswiki::Prefs::TopicRAM    ();
 use Foswiki::Prefs::BaseBackend ();
@@ -11,12 +12,15 @@ our @ISA = ('Foswiki::Prefs::TopicRAM');
 
 use Error qw(:try);
 
+use constant TRACE => 0;
+
 our $env;
 our $db;
 our %db;
 our $dumped;
 our $refcnt = 0;
 
+# Construct a new preferences backend object for the given topic
 sub new {
     my ( $class, $topicObject ) = @_;
 
@@ -49,6 +53,9 @@ sub new {
         $db{"${uid}_L"} = join( ',', keys %{ $this->{local} } );
         $db->db_sync();
         $lock->cds_unlock();
+        Foswiki::Func::writeDebug(
+            "PrefsCachePlugin: Loaded " . $topicObject->getPath() )
+          if TRACE;
     }
     else {
 
@@ -65,13 +72,13 @@ sub new {
     return $this;
 }
 
-sub finish {
+sub DESTROY {
     my $this = shift;
 
     $this->SUPER::finish();
     if ( $db && --$refcnt <= 0 ) {
         $db->db_close();
-        $db = undef;
+        undef $db;
     }
 }
 
@@ -83,6 +90,9 @@ sub invalidate {
     _initDB();
     my $uid = $db{ $topicObject->getPath() };
     return unless ( defined $uid );
+    Foswiki::Func::writeDebug(
+        "PrefsCachePlugin: invalidate " . $topicObject->getPath() )
+      if TRACE;
     delete $db{ $topicObject->getPath() };
     foreach my $k ( split( ",", $db{"${uid}_V"} || '' ) ) {
         delete $db{"${uid}V$k"};
@@ -98,7 +108,7 @@ sub invalidate {
 
 sub _initDB {
     unless ($db) {
-        my $dbfile = $Foswiki::cfg{Store}{BackendBDB};
+        my $dbfile = Foswiki::Func::getWorkArea('PrefsCachePlugin');
         unless ( -d $dbfile ) {
             mkdir($dbfile) || die "Failed to make $dbfile for prefs DB: $!";
         }
@@ -119,7 +129,8 @@ sub _initDB {
 1;
 __DATA__
 
-Copyright (C) 2010 Foswiki Contributors. Foswiki Contributors
+Copyright (C) 2012-2014 Crawford Currie http://c-dot.co.uk
+and Foswiki Contributors. Foswiki Contributors
 are listed in the AUTHORS file in the root of this distribution.
 NOTE: Please extend that file, not this notice.
 
