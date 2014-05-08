@@ -103,7 +103,6 @@ sub invalidate {
     delete $db{"${uid}_V"};
     delete $db{"${uid}_L"};
     $db->db_sync();
-    $db->cds_unlock();
 }
 
 sub _initDB {
